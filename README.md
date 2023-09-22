@@ -3,3 +3,8 @@
 ## jdbcclient
 - é um wrapper sobre o jdbctemplate, para executar operações no banco de dados
 - ele abstrai a questão ro rowMapper e dos nomes das propriedades do bean, substituindo cameCase por anotação sublinhado.
+
+## Paginacao
+```
+curl --location 'http://localhost:8080/products?page=0&size=50&sort=price,DESC'
+```
