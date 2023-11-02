@@ -30,7 +30,7 @@ public class BookmarkRepositoryTest {
 
     @BeforeEach
     void setup() {
-        bookmarRepository = new BookmarRepository(/*jdbcClient*/);
+        bookmarRepository = new BookmarRepository(jdbcClient);
     }
 
     @Test

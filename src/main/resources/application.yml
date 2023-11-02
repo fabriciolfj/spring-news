@@ -2,13 +2,17 @@ jsonplace:
   url: https://jsonplaceholder.typicode.com
 spring:
   flyway:
-    user: ${spring.r2dbc.username}
-    password: ${spring.r2dbc.password}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     url: jdbc:postgresql://localhost:5432/postgres
-  r2dbc:
+  datasource:
     username: root
     password: root
-    url: r2dbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+  #r2dbc:
+  #  username: root
+  #  password: root
+  #  url: r2dbc:postgresql://localhost:5432/postgres
     pool:
       max-create-connection-time: 2s
       initial-size: 5

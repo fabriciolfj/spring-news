@@ -1,5 +1,11 @@
-TRUNCATE TABLE bookmarks;
-ALTER SEQUENCE bookmarks_id_seq RESTART WITH 1;
+create table bookmarks
+(
+    id         bigserial primary key,
+    title      varchar   not null,
+    url        varchar   not null,
+    created_at timestamp
+);
+
 
 INSERT INTO bookmarks(title, url, created_at) VALUES
 ('How (not) to ask for Technical Help?','https://sivalabs.in/how-to-not-to-ask-for-technical-help', CURRENT_TIMESTAMP),
