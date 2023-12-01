@@ -1,6 +1,9 @@
 jsonplace:
   url: https://jsonplaceholder.typicode.com
 spring:
+  threads:
+    virtual:
+      enabled: true
   flyway:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}

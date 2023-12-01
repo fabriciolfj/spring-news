@@ -58,3 +58,11 @@ public class JsonPlaceholderClientConfig {
 
 
 ```
+
+# Anotação conditionalOnThreading
+- permite a criação de um bean com base no tipo de thread, seja de plataforma (comum)
+- ou threads virtuais
+- para isso deixamos a propriedade abaixo habilitada e anotação no bean @ConditionalOnThreading(Threading.tipo PLATAFORM/VIRTUAL)
+```
+spring.threads.virtual.enabled=true
+```
