@@ -12,3 +12,12 @@ create table product
     name    varchar(50),
     price   decimal
 );
+
+
+create table articles
+(
+    id          bigserial primary key,
+    title       varchar(50),
+    content     varchar(50),
+    language    varchar(50)
+);

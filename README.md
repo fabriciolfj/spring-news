@@ -66,3 +66,54 @@ public class JsonPlaceholderClientConfig {
 ```
 spring.threads.virtual.enabled=true
 ```
+
+# Spel com spring data
+- podemos utilizar expressões regulares dentro das query, em nossos repositorios
+- podemos utiliza o EvaluationContextExtension, para trazer recursos do spring as nossas spel, como por exemplo:
+```
+@Component
+public class LocaleContextHolderExtension implements EvaluationContextExtension {
+
+    @Override
+    public String getExtensionId() {
+        return "locale";
+    }
+
+    @Override
+    public Locale getRootObject() {
+        return LocaleContextHolder.getLocale();
+    }
+}
+
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("locale");
+        registry.addInterceptor(localeChangeInterceptor);
+    }
+}
+
+@Query(value = "SELECT * FROM articles WHERE language = :#{locale.language}", nativeQuery = true)
+List<Article> findAllArticlesUsingLocaleWithNativeQuery();
+```
+- usar consultas dinamicas em tabelas, como:
+```
+@NoRepositoryBean
+public interface BaseNewsApplicationRepository<T, ID> extends JpaRepository<T, ID> {
+    @Query(value = "select e from #{#entityName} e")
+    List<Article> findAllEntitiesUsingEntityPlaceholder();
+
+    @Query(value = "SELECT * FROM #{#entityName}", nativeQuery = true)
+    List<Article> findAllEntitiesUsingEntityPlaceholderWithNativeQuery();
+}
+
+@Entity(name = "articles")
+@Table(name = "articles")
+public class Article {
+// ...
+}
+
+```
