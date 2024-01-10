@@ -35,3 +35,11 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
+monday: Mon-Day!
+tuesday: TuesDAY#
+wednesday: Wednes@day
+thursday: THURSday^
+friday: Fri:Day_%
+saturday: Satur_DAY
+sunday: Sun+Day
