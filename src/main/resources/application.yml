@@ -1,6 +1,7 @@
 jsonplace:
   url: https://jsonplaceholder.typicode.com
 spring:
+  thread-executor: virtual
   threads:
     virtual:
       enabled: true
