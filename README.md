@@ -117,3 +117,9 @@ public class Article {
 }
 
 ```
+
+# findById  e getReferenceById
+- A principal diferença entre findById() e getReferenceById() é quando eles carregam as entidades no contexto de persistência
+- o findById ja interage com a base de dados, ja o getReferenceById vai interagir quando formos utilziar (ele é lazy)
+- operações lazy fora de um persistence context (@transaction, ou seja desanexado), quando utilizar teremos uma exceção
+- então operações lazy, precisam estar em um estado gerenciado, ou seja, dentro de uma transação.
