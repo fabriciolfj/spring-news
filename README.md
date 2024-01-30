@@ -123,3 +123,94 @@ public class Article {
 - o findById ja interage com a base de dados, ja o getReferenceById vai interagir quando formos utilziar (ele é lazy)
 - operações lazy fora de um persistence context (@transaction, ou seja desanexado), quando utilizar teremos uma exceção
 - então operações lazy, precisam estar em um estado gerenciado, ou seja, dentro de uma transação.
+
+# rastreabilidade spring, kafka micrometer 
+- o kafka vem com integração com micrometer para kafkatemplate e seus listeners
+- para iniciar precisa-se das dependências abaixo (actuator, ponte para o micrometer e o exportador):
+```
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-tracing-bridge-otel</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-exporter-otlp</artifactId>
+  </dependency>
+</dependencies>
+```
+- para habilitar a observabilidade no produtor, temos que personalizar o bean kafkatemplate, alem de adicionar novas tags ao micrometer (ele coloca umas genéricas)
+- deste exemplo abaixo, pegamos o nome do topic e a chave da mensagem
+```
+    @Bean
+    public KafkaTemplate<Long, Info> kafkaTemplate(ProducerFactory<Long, Info> producerFactory) {
+        KafkaTemplate<Long, Info> t = new KafkaTemplate<>(producerFactory);
+        t.setObservationEnabled(true);
+        t.setObservationConvention(new KafkaTemplateObservationConvention() {
+            @Override
+            public KeyValues getLowCardinalityKeyValues(KafkaRecordSenderContext context) {
+                return KeyValues.of("topic", context.getDestination(),
+                        "id", String.valueOf(context.getRecord().key()));
+            }
+        });
+        return t;
+    }
+```
+- e tambem no application.yaml, o percenaul de spans que será exportada
+```
+management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://jaeger:4318/v1/traces
+```
+- do lado do consumidor, devemos personalizar o container factory, habilizando a observationEnabled(true)
+```
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> listenerFactory(ConsumerFactory<String, String> consumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.getContainerProperties().setObservationEnabled(true);
+        factory.setConsumerFactory(consumerFactory);
+        return factory;
+    }
+```
+- e definir o endereço do jaeger e o percentual de spans exportados (igual ao application.yaml ao produtor)
+- finalizar um exemplo de um docker-compose-example na app
+- para k8s, precisa instalar o jeager (podemos usar o helm)
+```
+helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
+values jaeger.yml
+collector:
+  service:
+    otlp:
+      grpc:
+        name: otlp-grpc
+        port: 4317
+      http:
+        name: otlp-http
+        port: 4318
+
+helm install jaeger jaegertracing/jaeger -n jaeger \
+    --create-namespace \
+    -f jaeger-values.yaml        
+```
