@@ -21,3 +21,12 @@ create table articles
     content     varchar(50),
     language    varchar(50)
 );
+
+
+CREATE TABLE student (
+    student_id bigserial PRIMARY KEY,
+    admit_year VARCHAR(4),
+    address jsonb
+);
+
+ CREATE INDEX idx_postcode ON student USING HASH((address->'postCode'));
