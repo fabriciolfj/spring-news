@@ -23,6 +23,9 @@ spring:
       max-size: 10
   application:
     name: transaction-service
+  kafka:
+    bootstrap-servers:
+      - localhost:29092
 
 management:
   endpoints:
