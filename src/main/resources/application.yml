@@ -25,7 +25,7 @@ spring:
     name: transaction-service
   kafka:
     bootstrap-servers:
-      - localhost:29092
+      - localhost:9093
 
 management:
   endpoints:
