@@ -83,6 +83,12 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+
+		<dependency>
 			<groupId>io.zipkin.reporter2</groupId>
 			<artifactId>zipkin-reporter-brave</artifactId>
 		</dependency>
@@ -144,6 +150,37 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.3.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/api/quotes.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<templateResourcePath>${project.basedir}/src/templates/JavaSpring</templateResourcePath>
+							<globalProperties>
+								<debugOpenAPI>true</debugOpenAPI>
+								<debugOperations>true</debugOperations>
+							</globalProperties>
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+								<openApiNullable>false</openApiNullable>
+								<delegatePattern>true</delegatePattern>
+								<apiPackage>com.github.fabrluc.practicespring.controller</apiPackage>
+								<modelPackage>com.github.fabrluc.practicespring.dto</modelPackage>
+								<documentationProvider>source</documentationProvider>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 	<repositories>

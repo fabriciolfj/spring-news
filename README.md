@@ -217,3 +217,17 @@ helm install jaeger jaegertracing/jaeger -n jaeger \
     --create-namespace \
     -f jaeger-values.yaml        
 ```
+# Exemplo de configuração ssl no spring 3
+````
+spring.ssl.bundle.jks:
+  server:
+    reload-on-update: true
+    keystore:
+      location: classpath:keystore.jks
+      password: 123456
+      type: JKS
+    truststore:
+      location: classpath:truststore.jks
+      password: 123456
+      type: JKS
+````
