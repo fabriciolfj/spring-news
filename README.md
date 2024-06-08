@@ -217,6 +217,52 @@ helm install jaeger jaegertracing/jaeger -n jaeger \
     --create-namespace \
     -f jaeger-values.yaml        
 ```
+
+# spring kafka contexto de mensagens duplicadas e perda de mensagens
+- ao utilizar o spring com kafka, por default o auto-commit e desabilitado, ou seja, o contexto do spring e responsável e não o kafka por confirmar as mensagens.
+```
+spring.kafka.enable.auto.commit=false
+```
+- outro ponto o modo de confirmação por default e batch
+```
+spring.kafka.listener.ack-mode=BATCH
+```
+- um exemplo simples de propriedades do produtor e consumidor
+```
+spring:
+  application.name: producer
+  kafka:
+    bootstrap-servers: ${KAFKA_URL}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+```
+```
+spring:
+  application.name: consumer
+  output.ansi.enabled: ALWAYS
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:localhost}:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+logging.level:
+  org.springframework.kafka: debug
+```
+- caso queria confirmar o consumo por mensagem, devemos ativar o listener ack-mode para RECORD
+- outro ponto importante, podemos confirmar as mensagens quando o desligamento da app acontecer, mudando para:
+```
+spring.kafka.listener.immediate-stop
+```
+- caso delegamos o processamento para outra thread, a thread que recebeu a mensagem ja a confirma, mas caso a outra que esteja processando falhe, perdemos a mensagem
+- ideal que confirmamos manualemente as mensagens quando delegamos para outra thread processar a mensagem.\
+```
+spring.kafka.listener.ack-mode: MANUAL_IMMEDIATE
+```
+
 # Exemplo de configuração ssl no spring 3
 ````
 spring.ssl.bundle.jks:
