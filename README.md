@@ -277,3 +277,12 @@ spring.ssl.bundle.jks:
       password: 123456
       type: JKS
 ````
+
+# ReplyingKafkaTemplate
+```
+O ReplyingKafkaTemplate faz parte da versão mais recente da biblioteca Spring Kafka 
+e é usado para implementar o pattern Request-Reply (solicitação-resposta) em aplicações Kafka.
+Já o pattern Request-Reply é um tipo de pattern de mensagens ponto a 
+ponto. Um produtor manda uma mensagem para um consumidor e aguarda uma resposta dentro de um
+ tempo limite. O ReplyingKafkaTemplate é construído de modo a cumprir essa função.
+```
