@@ -29,4 +29,17 @@ CREATE TABLE student (
     address jsonb
 );
 
- CREATE INDEX idx_postcode ON student USING HASH((address->'postCode'));
+CREATE INDEX idx_postcode ON student USING HASH((address->'postCode'));
+
+
+CREATE TABLE Owner (
+                       id BIGINT AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE Pet (
+                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                     birth_date DATE,
+                     type VARCHAR(255),
+                     owner_id BIGINT,
+                     CONSTRAINT FK_Pet_Owner FOREIGN KEY (owner_id) REFERENCES Owner(id)
+);
