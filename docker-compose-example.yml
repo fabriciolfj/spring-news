@@ -1,4 +1,4 @@
-version: "3.8"
+lsversion: "3.8"
 services:
   broker:
     image: moeenz/docker-kafka-kraft:latest

@@ -33,11 +33,11 @@ CREATE INDEX idx_postcode ON student USING HASH((address->'postCode'));
 
 
 CREATE TABLE Owner (
-                       id BIGINT AUTO_INCREMENT PRIMARY KEY
+                       id  bigserial PRIMARY KEY
 );
 
 CREATE TABLE Pet (
-                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                     id bigserial PRIMARY KEY,
                      birth_date DATE,
                      type VARCHAR(255),
                      owner_id BIGINT,

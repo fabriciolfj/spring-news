@@ -14,7 +14,7 @@
 	<name>practice-spring</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>23</java.version>
+		<java.version>22</java.version>
 	</properties>
 	<repositories>
 		<repository>

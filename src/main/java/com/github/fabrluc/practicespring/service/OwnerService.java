@@ -3,10 +3,10 @@ package com.github.fabrluc.practicespring.service;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.github.fabrluc.practicespring.entities.Owner;
 import com.github.fabrluc.practicespring.repository.OwnerRepository;
-import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@Server
+@Service
 @RequiredArgsConstructor
 public class OwnerService {
 
