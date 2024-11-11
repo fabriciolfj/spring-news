@@ -1,5 +1,67 @@
 # spring-news
 
+## Spring authorization manager
+- para verificar os endpotins expostos pelo spring authorization manager:
+```
+http://localhost:9000/.well-known/openid-configuration
+```
+- exemplo de configuração de dois clients via application yml
+```
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework.security: trace
+
+spring:
+  security:
+    user:
+      name: "user"
+      password: "password"
+    oauth2:
+      authorizationserver:
+        client:            
+          football:
+            registration:
+              client-id: "football"
+              client-secret: "{noop}SuperSecret"
+              client-authentication-methods:
+                - "client_secret_post"
+              authorization-grant-types:
+                - "client_credentials"
+              scopes:
+                - "football:read"
+                - "football:admin"
+          football-ui:
+            registration:
+              client-id: "football-ui"
+              client-secret: "{noop}TheSecretSauce"
+              client-authentication-methods:
+                - "client_secret_basic"
+              authorization-grant-types:
+                - "authorization_code"
+                - "refresh_token"
+                - "client_credentials"
+              redirect-uris: 
+                - "http://localhost:9080/login/oauth2/code/football-ui"
+              scopes:
+                - "openid"
+                - "profile"
+                - "football:read"
+                - "football:admin"
+            require-authorization-consent: true
+```
+- exemplo para requisitar um token
+```
+curl --location 'http://localhost:9000/oauth2/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'client_id=football' \
+--data-urlencode 'client_secret=SuperSecret' \
+--data-urlencode 'scope=football:read'
+```
+
 ## features deste projeto
 - controle dos listeners kafka
 
