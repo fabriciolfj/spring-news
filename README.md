@@ -1,5 +1,16 @@
 # spring-news
-
+## Spring resources server
+```
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          audiences:
+          - football -> pra quem se destina o token
+          - football-ui
+          issuer-uri: http://localhost:9000 -> baixar as chaves jwks (http://localhost:9000/.well-known/openid-configuration), para validar o token. obs: baixa apenas uma vez e depois utiliza esses dados em memória.
+```
 ## Spring authorization manager
 - para verificar os endpotins expostos pelo spring authorization manager:
 ```
