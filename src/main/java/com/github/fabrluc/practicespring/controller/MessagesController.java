@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.springframework.security.oauth2.client.web.client.RequestAttributeClientRegistrationIdResolver.clientRegistrationId;
 
-@RestController
+/*@RestController
 public class MessagesController {
 
     private final RestClient restClient;
@@ -33,4 +33,4 @@ public class MessagesController {
     public record Message(String message) {
     }
 
-}
+}*/

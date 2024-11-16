@@ -1,19 +1,19 @@
 jsonplace:
   url: https://jsonplaceholder.typicode.com
 spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          messaging-client:
-            provider: spring
-            client-id: client1
-            client-secret: my-secret
-            authorization-grant-type: authorization_code
-            scope: message.read,message.write
-        provider:
-          spring:
-            issuer-uri: http://localhost:9000
+#  security:
+  #    oauth2:
+  #    client:
+  #     registration:
+  #       messaging-client:
+  #         provider: spring
+  #         client-id: client1
+  #         client-secret: my-secret
+  #         authorization-grant-type: authorization_code
+  #         scope: message.read,message.write
+  #     provider:
+  #       spring:
+  #         issuer-uri: http://localhost:9000
   thread-executor: virtual
   threads:
     virtual:
