@@ -1,4 +1,111 @@
 # spring-news
+## novos recurso oauth2 client com restclient
+-- condiguração básica
+```
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          messaging-client:
+            provider: spring
+            client-id: client1
+            client-secret: my-secret
+            authorization-grant-type: authorization_code
+            scope: message.read,message.write
+        provider:
+          spring:
+            issuer-uri: http://localhost:9000
+            
+@Configuration
+public class RestClientConfig {
+
+	@Bean
+	public RestClient restClient(RestClient.Builder builder, OAuth2AuthorizedClientManager authorizedClientManager) {
+		OAuth2ClientHttpRequestInterceptor requestInterceptor =
+			new OAuth2ClientHttpRequestInterceptor(authorizedClientManager);
+
+		return builder.requestInterceptor(requestInterceptor).build();
+	}
+
+}
+```
+- para uma configuração personalizada para cada grant_type
+```
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+	private final RestClient restClient;
+
+	@PostConstruct
+	void initialize() {
+		this.restClient = RestClient.builder()
+			.messageConverters((messageConverters) -> {
+				messageConverters.clear();
+				messageConverters.add(new FormHttpMessageConverter());
+				messageConverters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
+			})
+			.defaultStatusHandler(new OAuth2ErrorResponseErrorHandler())
+			// TODO: Customize the instance of RestClient as needed...
+			.build();
+	}
+
+	@Bean
+	public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> authorizationCodeAccessTokenResponseClient() {
+		RestClientAuthorizationCodeTokenResponseClient accessTokenResponseClient =
+			new RestClientAuthorizationCodeTokenResponseClient();
+		accessTokenResponseClient.setRestClient(this.restClient);
+
+		return accessTokenResponseClient;
+	}
+
+	@Bean
+	public OAuth2AccessTokenResponseClient<OAuth2RefreshTokenGrantRequest> refreshTokenAccessTokenResponseClient() {
+		RestClientRefreshTokenTokenResponseClient accessTokenResponseClient =
+			new RestClientRefreshTokenTokenResponseClient();
+		accessTokenResponseClient.setRestClient(this.restClient);
+
+		return accessTokenResponseClient;
+	}
+
+	@Bean
+	public OAuth2AccessTokenResponseClient<OAuth2ClientCredentialsGrantRequest> clientCredentialsAccessTokenResponseClient() {
+		RestClientClientCredentialsTokenResponseClient accessTokenResponseClient =
+			new RestClientClientCredentialsTokenResponseClient();
+		accessTokenResponseClient.setRestClient(this.restClient);
+
+		return accessTokenResponseClient;
+	}
+
+	@Bean
+	public OAuth2AccessTokenResponseClient<OAuth2PasswordGrantRequest> passwordAccessTokenResponseClient() {
+		return (grantRequest) -> {
+			throw new UnsupportedOperationException("The `password` grant type is not supported.");
+		};
+	}
+
+	@Bean
+	public OAuth2AccessTokenResponseClient<JwtBearerGrantRequest> jwtBearerAccessTokenResponseClient() {
+		RestClientJwtBearerTokenResponseClient accessTokenResponseClient =
+			new RestClientJwtBearerTokenResponseClient();
+		accessTokenResponseClient.setRestClient(this.restClient);
+
+		return accessTokenResponseClient;
+	}
+
+	@Bean
+	public OAuth2AccessTokenResponseClient<TokenExchangeGrantRequest> tokenExchangeAccessTokenResponseClient() {
+		RestClientTokenExchangeTokenResponseClient accessTokenResponseClient =
+			new RestClientTokenExchangeTokenResponseClient();
+		accessTokenResponseClient.setRestClient(this.restClient);
+
+		return accessTokenResponseClient;
+	}
+
+}
+```
+
 ## Spring resources server
 ```
 spring:
