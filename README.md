@@ -1,6 +1,11 @@
 # spring-news
-## novos recurso oauth2 client com restclient
--- condiguração básica
+## mudando o level de logs em tempo de execução:
+```
+curl --location 'localhost:8080/actuator/loggers/com.github.fabriciolfj.orders' \
+--header 'Content-Type: application/json' \
+--data '{
+    "configuredLevel" : "DEBUG"
+}'
 ```
 spring:
   security:
