@@ -1,4 +1,11 @@
 # spring-news
+## build native image
+```
+mvn -Pnative native:compile ou image
+mvn -Pnative spring-boot:build-image
+
+```
+
 ## mudando o level de logs em tempo de execução:
 ```
 curl --location 'localhost:8080/actuator/loggers/com.github.fabriciolfj.orders' \
