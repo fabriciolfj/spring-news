@@ -1,4 +1,32 @@
 # spring-news
+## exemplo rest client com http 2.0 e comprimindo a request:
+```
+@Configuration
+public class RestClientConfig {
+    
+    @Bean
+    public RestClient restClient(RestClient.Builder builder) {
+        return builder
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .requestInterceptor((request, body, execution) -> {
+                request.getHeaders().add(HttpHeaders.CONTENT_ENCODING, "gzip");
+                return execution.execute(request, body);
+            })
+            .requestFactory(clientHttpRequestFactory())
+            .build();
+    }
+    
+    private ClientHttpRequestFactory clientHttpRequestFactory() {
+        JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory();
+        factory.setHttpClient(HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_2)
+            .build());
+        return factory;
+    }
+}
+```
+
+
 ## build native image
 ```
 mvn -Pnative native:compile ou image
