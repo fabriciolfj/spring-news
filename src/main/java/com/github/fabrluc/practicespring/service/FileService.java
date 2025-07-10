@@ -9,6 +9,8 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
+import static org.yaml.snakeyaml.nodes.Tag.STR;
+
 @Service
 public class FileService {
 
@@ -16,11 +18,12 @@ public class FileService {
     private String filesBaseDir;
 
     public Mono<String> getFileContentAsString(String fileName) {
-        return DataBufferUtils.read(Paths.get(STR."\{filesBaseDir}/\{fileName}"),
+        /*return DataBufferUtils.read(Paths.get(STR."\{filesBaseDir}/\{fileName}"),
                         DefaultDataBufferFactory.sharedInstance,
                         DefaultDataBufferFactory.DEFAULT_INITIAL_CAPACITY)
                 .map(dataBuffer -> dataBuffer.toString(StandardCharsets.UTF_8))
                 .reduceWith(StringBuilder::new, StringBuilder::append)
-                .map(StringBuilder::toString);
+                .map(StringBuilder::toString);*/
+        return Mono.empty();
     }
 }

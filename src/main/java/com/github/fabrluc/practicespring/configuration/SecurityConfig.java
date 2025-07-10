@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+//@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -30,7 +30,7 @@ public class SecurityConfig {
     SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize.anyRequest()
                         .authenticated())
-                .csrf(Customizer.withDefaults())
+                .csrf(c -> c.disable())
                 .httpBasic(Customizer.withDefaults())
                 .build();
 
