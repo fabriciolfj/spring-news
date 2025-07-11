@@ -19,7 +19,7 @@ public class JsonPlaceholderClientConfig {
 
     @Bean
     public JsonPlaceholderService jsonPlaceholderService() {
-        final RestClient restClient = RestClient.create(this.url);
+        final RestClient restClient = RestClient.builder().baseUrl(this.url).build();
         final var factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient)).build();
 
         return factory.createClient(JsonPlaceholderService.class);
