@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+//@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -30,7 +31,7 @@ public class SecurityConfig {
     SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize.anyRequest()
                         .authenticated())
-                .csrf(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .build();
 

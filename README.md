@@ -506,3 +506,12 @@ Já o pattern Request-Reply é um tipo de pattern de mensagens ponto a
 ponto. Um produtor manda uma mensagem para um consumidor e aguarda uma resposta dentro de um
  tempo limite. O ReplyingKafkaTemplate é construído de modo a cumprir essa função.
 ```
+
+# problema virtual threads java 21 (resolvido java 24)
+```
+Quando uma thread virtual executa código dentro de um bloco synchronized, ela não pode ser desmontada da thread da plataforma (platform thread) que a está executando. Isso significa que:
+
+Thread da plataforma fica "presa": A thread do sistema operacional permanece ocupada mesmo quando a thread virtual está bloqueada
+Pool de threads não é liberado: A thread da plataforma não retorna ao pool para ser reutilizada
+Perda do benefício principal: O mecanismo de multiplexação das threads virtuais é quebrado
+```
