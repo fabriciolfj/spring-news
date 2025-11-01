@@ -1,6 +1,29 @@
 jsonplace:
   url: https://jsonplaceholder.typicode.com
 spring:
+  grpc:
+    client:
+      channels:
+        local:
+          address: localhost:9090
+          negotiation-type: plaintext
+          max-inbound-message-size: 4MB
+
+    server:
+      # Porta do servidor gRPC (padrão é 9090)
+      port: 9090
+
+      # Configurações de tamanho de mensagem
+      max-inbound-message-size: 4MB
+
+      # Habilita o serviço de reflection (útil para ferramentas como grpcurl)
+      # Requer: io.grpc:grpc-services no classpath
+      reflection:
+        enabled: true
+
+      # Habilita o serviço de health check
+      health:
+        enabled: true
 #  security:
   #    oauth2:
   #    client:

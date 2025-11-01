@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.exemplo.grpc";
+option java_outer_classname = "SaudacaoProto";
+
+package saudacao;
+
+// Serviço de saudação
+service SaudacaoService {
+  // RPC simples (unary)
+  rpc Saudar (SaudacaoRequest) returns (SaudacaoResponse);
+  
+  // RPC de streaming do servidor
+  rpc SaudarMultiplo (SaudacaoRequest) returns (stream SaudacaoResponse);
+}
+
+// Mensagem de requisição
+message SaudacaoRequest {
+  string nome = 1;
+}
+
+// Mensagem de resposta
+message SaudacaoResponse {
+  string mensagem = 1;
+  int64 timestamp = 2;
+}
