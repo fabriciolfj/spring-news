@@ -19,4 +19,10 @@ public class SaudacaoController {
     public SaudacaoDto createMessage(@PathVariable("name") final String name) {
         return saudacaoClientService.sendSaudacao(name);
     }
+
+
+    @GetMapping("/varias/{name}")
+    public void createVariasMessage(@PathVariable("name") final String name) {
+        saudacaoClientService.sendVariasSaudacoes(name);
+    }
 }
