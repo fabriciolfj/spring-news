@@ -1,6 +1,13 @@
 jsonplace:
   url: https://jsonplaceholder.typicode.com
 spring:
+  ai:
+    anthropic:
+      api-key: ${KEY}
+    chat:
+      client:
+        tool-function-callbacks:
+          auto-enable: false
   grpc:
     client:
       channels:
